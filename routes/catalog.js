@@ -93,9 +93,7 @@ router.get("/products", jsonParser, function (req, res) {
 
 router.get("/product/:productId/", jsonParser, function (req, res) {
   if (req.params.productId) {
-    res.json(
-      catalog.find((product) => product.id === parseInt(req.params.productId))
-    );
+    res.json(catalog.find((product) => product.id === req.params.productId));
   } else {
     res.status(401).send({ message: "Product is not found" });
   }

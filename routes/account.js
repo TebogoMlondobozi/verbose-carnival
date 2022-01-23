@@ -3,9 +3,7 @@ const bodyParser = require("body-parser");
 const { v4: uuidv4 } = require("uuid");
 
 const router = express.Router();
-
 const users = [];
-
 // create application/json parser
 const jsonParser = bodyParser.json();
 
