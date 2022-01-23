@@ -1,0 +1,28 @@
+{
+  "name": "eazywash",
+  "version": "1.0.0",
+  "description": "Laundry convenience",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AwolNangoku/easywash-core.git"
+  },
+  "author": "mlo solutions",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AwolNangoku/easywash-core/issues"
+  },
+  "homepage": "https://github.com/AwolNangoku/easywash-core#readme",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "mongodb": "^4.3.0",
+    "mongoose": "^6.1.6",
+    "node-dev": "^7.1.0",
+    "uuid": "^8.3.2"
+  }
+}
