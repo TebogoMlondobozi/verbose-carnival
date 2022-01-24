@@ -22,8 +22,8 @@ router.post("/register/", jsonParser, async function (req, res) {
 });
 
 router.post("/login", jsonParser, function (req, res) {
-  const { username, password } = req.body;
-  const query = User.where({ username: username, password: password });
+  const { username } = req.body;
+  const query = User.where({ emailAddress: username });
   query.findOne(function (err, user) {
     if (err)
       res
