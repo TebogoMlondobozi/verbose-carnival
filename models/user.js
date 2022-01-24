@@ -1,17 +1,15 @@
 const mongoose = require("mongoose");
-
-mongoose
-  .connect("mongodb://127.0.0.1:27017/eazywash-db")
-  .then(() => console.log("connection established"));
+const db = require("./db");
 
 const { Schema, model } = mongoose;
 
 const userSchema = new Schema({
   firstname: String,
   lastname: String,
-  emailAddress: String,
+  emailAddress: { type: String, unique: true },
   mobileNumber: String,
   password: String,
+  timestamp: { type: Date, default: Date.now },
 });
 
 const UserModel = model("User", userSchema);
