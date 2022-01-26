@@ -12,26 +12,41 @@ const jsonParser = bodyParser.json();
 
 router.use(jsonParser);
 
-const upload = multer({
-  dest: "./public/data/uploads/",
-  rename: (fieldname, filename) => filename,
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/data/uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
 });
+
+const upload = multer({ storage: storage });
 
 router.post(
   "/upload",
   upload.single("uploaded_file"),
   async function (req, res) {
-    const newProduct = new Product({
-      ...req.body,
-      img: {
-        data: fs.readFileSync(req.file.path),
-        contentType: req.file.mimetype,
-      },
-    });
-
-    await newProduct.save().then((savedProduct) => {
-      res.send(savedProduct);
-    });
+    fs.readFile(
+      `./public/data/uploads/${req.file.originalname}`,
+      "base64",
+      async (err, base64Image) => {
+        if (err) {
+          res.status(401).send({ message: "Failed reading file" });
+        }
+        const newProduct = new Product({
+          ...req.body,
+          img: {
+            name: req.file.originalname,
+            contentType: req.file.mimetype,
+            dataUrl: `data:${req.file.mimetype};base64, ${base64Image}`,
+          },
+        });
+        await newProduct.save().then((savedProduct) => {
+          res.send(savedProduct);
+        });
+      }
+    );
   }
 );
 

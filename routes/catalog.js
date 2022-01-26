@@ -14,16 +14,15 @@ router.get("/products", jsonParser, async function (req, res) {
   res.json({ catalog: products });
 });
 
-router.get("/product/:productId/", jsonParser, async function (req, res) {
-  const query = Product.where({ _id: req.params.productId });
-  await query.findOne(function (err, product) {
-    if (err) res.status(500).send({ message: "Failed finding product" });
+router.get("/product/:productId/", jsonParser, function (req, res) {
+  Product.findById(req.params.productId, function (err, product) {
     if (product) {
       res.send(product);
     }
     if (!product) {
       res.status(401).send({ message: "Product is not found." });
     }
+    if (err) res.status(500).send({ message: "Failed finding product" });
   });
 });
 
