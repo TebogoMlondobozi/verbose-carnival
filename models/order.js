@@ -3,29 +3,25 @@ const db = require("./db");
 
 const { Schema, model } = mongoose;
 
-const orderItemSchema = new Schema(
+const OrderItemSchema = new Schema(
   {
-    name: { type: String, unique: true },
     created: { type: Date, default: Date.now },
-    unitPrice: { type: Schema.Types.Decimal128 },
-    description: String,
-    quantity: { type: Number, default: 0 },
+    unitPrice: { type: Schema.Types.Decimal128, default: 0.0 },
+    qty: { type: Number, default: 0 },
   },
   { strict: false }
 );
 
-const orderSchema = new Schema(
+const OrderSchema = new Schema(
   {
     client: { type: Schema.Types.ObjectId, ref: "User" },
     created: { type: Date, default: Date.now },
-    items: [{ type: Schema.Types.ObjectId, ref: "OrderItem" }],
-    isPaid: Boolean,
+    items: [OrderItemSchema],
     note: String,
   },
   { strict: false }
 );
 
-const OrderModel = model("Order", orderSchema);
-const OrderItemModel = model("OrderItem", orderItemSchema);
+const OrderModel = model("Order", OrderSchema);
 
-module.exports = { OrderModel, OrderItemModel };
+module.exports = OrderModel;
