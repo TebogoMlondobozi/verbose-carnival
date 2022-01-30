@@ -14,7 +14,7 @@ router.get("/products", jsonParser, async function (req, res) {
 });
 
 router.get("/product/:productId/", jsonParser, function (req, res) {
-  Product.findById(req.params.productId, function (err, product) {
+  Product.findById({ _id: req.params.productId }, function (err, product) {
     if (product) {
       res.send(product);
     }
