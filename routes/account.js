@@ -16,9 +16,15 @@ router.post("/register/", jsonParser, async function (req, res) {
       mobileNumber: req.body.mobile_number,
       password: req.body.password,
     });
-    await user.save().then((savedUser) => {
-      res.send(savedUser);
-    });
+    await user
+      .save()
+      .then((savedUser) => {
+        res.send(savedUser);
+      })
+      .catch((error) => {
+        console.log("Failed adding new user", error);
+        res.status(400).send({ message: "Failed user account creation" });
+      });
   }
 });
 
@@ -28,7 +34,7 @@ router.post("/login", jsonParser, async function (req, res) {
     .then((user) =>
       user.password === password
         ? res.send(user)
-        : res.send({
+        : res.status(401).send({
             message: "Incorrect logins, please check your login details",
           })
     )

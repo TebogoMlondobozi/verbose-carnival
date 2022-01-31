@@ -23,7 +23,7 @@ const createOrder = (req, res, next) => {
         await newOrder.save().then((savedOrder) => {
           transporter.sendMail(
             {
-              from: "ncedile.nkonyana@gmail.com",
+              from: "",
               to: user.emailAddress,
               subject: "Easee wash - Your new order",
               text: "Please make sure payment is made for us to pickup your load",

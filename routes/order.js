@@ -50,16 +50,30 @@ router.put(
       });
   }
 );
-router.get("/:orderId/", function (req, res) {
-  Order.findById({ _id: req.params.orderId }, function (err, order) {
-    if (order) {
-      res.send(order);
-    }
-    if (!order) {
-      res.status(401).send({ message: "Order is not found." });
-    }
-    if (err) res.status(500).send({ message: "Failed finding order" });
-  });
+
+router.get("/:orderId/user/:userId", function (req, res) {
+  Order.findById({ _id: req.params.orderId })
+    .then((order) => {
+      if (order && order.client.toString() === req.params.userId) {
+        res.send(order);
+      } else {
+        res.send(undefined);
+      }
+    })
+    .catch((error) => {
+      res.status(401).send({ message: "Order is not found.", error });
+    });
+});
+
+router.get("/recentOrders/:userId", function (req, res) {
+  Order.find({ client: req.params.userId })
+    .limit(10)
+    .then((orders) => {
+      res.send(orders);
+    })
+    .catch((error) => {
+      res.status(401).send({ message: "Orders are not found.", error });
+    });
 });
 
 module.exports = router;
