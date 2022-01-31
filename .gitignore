@@ -1,5 +1,5 @@
 # Config file with environment variable settings
-.config
+config.js
 
 # Logs
 logs
