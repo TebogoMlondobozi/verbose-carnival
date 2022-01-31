@@ -1,7 +1,10 @@
 const app = require("./app");
+const config = require("./config");
 
-const port = 3000;
+const {
+  app: { host, port },
+} = config();
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Easy wash app listening at http://${host}:${port}`);
 });

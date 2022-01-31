@@ -1,15 +1,6 @@
-const nodemailer = require("nodemailer");
-
 const User = require("../../models/user");
 const Order = require("../../models/order");
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "",
-    pass: "",
-  },
-});
+const sendEmail = require("../../app/utils/email-config");
 
 const createOrder = (req, res, next) => {
   if (req.body) {
@@ -21,22 +12,11 @@ const createOrder = (req, res, next) => {
         });
 
         await newOrder.save().then((savedOrder) => {
-          transporter.sendMail(
-            {
-              from: "",
-              to: user.emailAddress,
-              subject: "Easee wash - Your new order",
-              text: "Please make sure payment is made for us to pickup your load",
-            },
-            function (error, info) {
-              if (error) {
-                console.log(error);
-              } else {
-                console.log("Order created email sent: " + info.response);
-                res.send(savedOrder);
-              }
-            }
-          );
+          sendEmail({
+            to: user.emailAddress,
+            subject: "Easee wash - Your new order",
+            text: "Please make sure payment is made for us to pickup your load",
+          });
           res.send(savedOrder);
         });
       }
