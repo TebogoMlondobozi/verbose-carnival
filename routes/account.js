@@ -38,11 +38,14 @@ router.post("/login", jsonParser, async function (req, res) {
   const { username, password } = req.body;
   User.findOne({ emailAddress: username })
     .then((user) =>
-      user.password === password
-        ? res.send(user)
-        : res.status(401).send({
-            message: "Incorrect logins, please check your login details",
-          })
+      user.comparePassword(password, (passwordsMatched) =>
+        passwordsMatched
+          ? res.send({ success: true, user })
+          : res.status(401).send({
+              message: "Incorrect logins, please check your login details",
+              failed: true,
+            })
+      )
     )
     .catch((err) => {
       res.status(400).send({ message: err, status: false });

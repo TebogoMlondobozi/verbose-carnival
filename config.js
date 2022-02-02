@@ -12,7 +12,7 @@ const dev = {
     url: process.env.DE_DB_URL || "mongodb://127.0.0.1:27017/eazywash-db",
   },
   emailService: {
-    service: process.env.DEV_EMAIL_SERVICE || "",
+    service: process.env.DEV_EMAIL_SERVICE || "gmail",
     auth: {
       user: process.env.AUTH_EMAIL_ADDRESS || "",
       pass: process.env.AUTH_PASSWORD || "",
