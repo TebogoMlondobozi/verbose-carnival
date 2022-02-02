@@ -19,11 +19,17 @@ router.post("/register/", jsonParser, async function (req, res) {
     await user
       .save()
       .then((savedUser) => {
-        res.send(savedUser);
+        res.send({
+          success: true,
+          message: "Your account has been created successfully!",
+          user: savedUser,
+        });
       })
       .catch((error) => {
         console.log("Failed adding new user", error);
-        res.status(400).send({ message: "Failed user account creation" });
+        res
+          .status(400)
+          .send({ success: false, message: "Failed creating user account" });
       });
   }
 });
