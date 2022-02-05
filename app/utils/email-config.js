@@ -4,7 +4,7 @@ const config = require("../../config");
 
 const {
   emailService: { service, auth, campaignEmail },
-} = config();
+} = config(process.env.NODE_ENV);
 
 const transporter = nodemailer.createTransport({
   service: service,
