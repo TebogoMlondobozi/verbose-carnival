@@ -25,4 +25,19 @@ router.get("/product/:productId/", jsonParser, function (req, res) {
   });
 });
 
+router.delete("/product/:productId", jsonParser, async function (req, res) {
+  Product.deleteOne({ _id: req.params.productId })
+    .then(({ deletedCount }) => {
+      if (deletedCount === 1) {
+        res.json({ message: "Successfully deleted product", success: true });
+      }
+    })
+    .catch((error) => {
+      console.log("Failed deleting items", error);
+      res
+        .status(400)
+        .send({ message: "Failed deleting product", failed: true });
+    });
+});
+
 module.exports = router;
