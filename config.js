@@ -1,6 +1,4 @@
-const env = process.env.NODE_ENV;
-
-const dev = {
+const config = (env) => ({
   app: {
     port: env === "production" ? process.env.PORT : process.env.PORT_DEV,
     host:
@@ -16,7 +14,9 @@ const dev = {
   },
   emailService: {
     service:
-      env === "production" ? process.env.PROD_EMAIL_SERVICE : DEV_EMAIL_SERVICE,
+      env === "production"
+        ? process.env.PROD_EMAIL_SERVICE
+        : process.env.DEV_EMAIL_SERVICE,
     auth: {
       user:
         env === "production"
@@ -34,8 +34,6 @@ const dev = {
           : process.env.DEV_CAMPAIGN_EMAIL,
     },
   },
-};
-
-const config = () => dev;
+});
 
 module.exports = config;
