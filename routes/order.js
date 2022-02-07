@@ -5,6 +5,7 @@ const Order = require("../models/order");
 
 const createOrder = require("../middlewares/orders/create-order");
 const UserModel = require("../models/user");
+const PaymentModel = require("../models/payments");
 
 const router = express.Router();
 // create application/json parser
@@ -73,6 +74,60 @@ router.get("/recentOrders/:userId", function (req, res) {
     })
     .catch((error) => {
       res.status(401).send({ message: "Orders are not found.", error });
+    });
+});
+
+router.post("/payment", jsonParser, function (req, res) {
+  console.log("----From payfast---", req.body);
+  UserModel.findById({ _id: req.body.custom_str2 })
+    .then(async (client) => {
+      if (client) {
+        const newPayment = new PaymentModel({
+          description: req.body.item_description,
+          charge: req.body.amount_gross,
+          amount_fee: req.body.amount_fee,
+          amount_net: req.body.amount_net,
+          paymentMethod: "payfast",
+          paymentStatus: req.body.payment_status,
+          paidBy: client,
+        });
+
+        await newPayment
+          .save()
+          .then((savedPayment) => {
+            Order.findByIdAndUpdate(
+              { _id: req.body.custom_str1 },
+              {
+                payment: savedPayment,
+                note: `${client.firstname} ${client.lastname} made order payment on ${Date.now}`,
+              }
+            )
+              .then((paidOrder) => {
+                res.send({
+                  message: "Successfully paid order",
+                  status: true,
+                  order: paidOrder,
+                });
+              })
+              .catch((error) => {
+                console.log("1. Failed saving order payment", error);
+                res.status(400).send({
+                  message: "Failed updating order payment",
+                  status: false,
+                });
+              });
+          })
+          .catch((error) => {
+            console.log("Failed creating new payment", error);
+            res.status(400).send({ message: "Failed saving new payment" });
+          });
+      }
+    })
+    .catch((error) => {
+      console.log("Failed finding user...", error);
+      res
+        .status(400)
+        .send({ message: "Failed finding user for recording payment" });
     });
 });
 

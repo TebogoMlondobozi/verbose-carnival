@@ -5,16 +5,11 @@ const { Schema, model } = mongoose;
 
 const PaymentSchema = new Schema(
   {
-    created: { type: Date, default: Date.now() },
+    created: { type: Date, default: Date.now },
     description: String,
     charge: { type: Schema.Types.Decimal128 },
     paymentMethod: { type: String, required: true },
     paymentStatus: String,
-    order: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: "Order",
-    },
   },
   { strict: false }
 );

@@ -18,6 +18,7 @@ const OrderSchema = new Schema(
     created: { type: Date, default: Date.now },
     items: [OrderItemSchema],
     note: String,
+    payment: { type: Schema.Types.ObjectId, ref: "Payment" },
   },
   { strict: false }
 );
