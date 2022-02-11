@@ -40,15 +40,22 @@ router.post("/login", jsonParser, async function (req, res) {
     .then((user) =>
       user.comparePassword(password, (passwordsMatched) =>
         passwordsMatched
-          ? res.send({ success: true, user })
+          ? res.send({
+              message: "Successfully logged in!",
+              success: true,
+              user,
+            })
           : res.status(401).send({
-              message: "Incorrect logins, please check your login details",
-              failed: true,
+              message: "Incorrect logins, please check your password.",
+              success: false,
             })
       )
     )
     .catch((err) => {
-      res.status(400).send({ message: err, status: false });
+      res.status(400).send({
+        message: "Incorrect details, please check your username and password.",
+        success: false,
+      });
     });
 });
 

@@ -99,12 +99,16 @@ router.post("/payment", jsonParser, function (req, res) {
               { _id: req.body.custom_str1 },
               {
                 payment: savedPayment,
+                orderStatus: savedPayment.paymentStatus,
                 note: `${client.firstname} ${client.lastname} made order payment on ${Date.now}`,
               }
             )
               .then((paidOrder) => {
                 res.send({
-                  message: "Successfully paid order",
+                  message:
+                    savedPayment.paymentStatus === "COMPLETED"
+                      ? "Successfully paid order"
+                      : "Order payment cancelled.",
                   status: true,
                   order: paidOrder,
                 });
