@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
+require("../models/db");
 const Order = require("../models/order");
 
 const createOrder = require("../middlewares/orders/create-order");

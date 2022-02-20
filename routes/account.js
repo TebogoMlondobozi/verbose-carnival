@@ -1,5 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+
+require("../models/db");
 const User = require("../models/user");
 const Address = require("../models/address");
 

@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 
+require("../models/db");
 const Product = require("../models/product");
 
 const router = express.Router();

@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const multer = require("multer");
 
+require("../models/db");
 const Product = require("../models/product");
 
 const router = express.Router();
@@ -42,8 +43,8 @@ router.post(
             dataUrl: `data:${req.file.mimetype};base64, ${base64Image}`,
           },
         });
-        await newProduct.save().then((savedProduct) => {
-          res.send(savedProduct);
+        await newProduct.save().then(() => {
+          res.send({ message: "File successfully uploaded!" });
         });
       }
     );
